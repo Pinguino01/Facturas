@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registro de Facturas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Panel de registros">
+        <div class="brand">
+          <div class="brand-mark">R</div>
+          <div>
+            <p>Registro</p>
+            <h1>Registro de Facturas</h1>
+          </div>
+        </div>
+
+        <button class="primary-action" id="newRecordButton" type="button">
+          <span aria-hidden="true">+</span>
+          Nueva actividad
+        </button>
+
+        <label class="search-box">
+          <span>Buscar registro</span>
+          <input id="searchInput" type="search" placeholder="Fecha, descripcion o lugar" />
+        </label>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Listado activo</h2>
+            <span id="recordCount">0 registros</span>
+          </div>
+          <div class="toolbar">
+            <button id="printButton" type="button">Imprimir</button>
+            <button id="exportButton" type="button">Exportar</button>
+            <button id="clearButton" type="button">Limpiar</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+              <h2>Campos</h2>
+            <span>Nombre, foto, fecha, descripcion</span>
+          </div>
+          <p class="panel-note">Los datos y fotos comprimidas se guardan en Firestore.</p>
+          <p class="status-message" id="statusMessage">Conectando Firebase...</p>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <form class="activity-form" id="activityForm">
+          <input id="recordId" type="hidden" />
+          <div class="form-header">
+            <div>
+              <p>Agregar evidencia</p>
+              <h2 id="formTitle">Nueva factura</h2>
+            </div>
+            <button class="ghost-button" id="cancelEditButton" type="button" hidden>Cancelar edicion</button>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Nombre del registro
+              <input id="nameInput" type="text" maxlength="90" placeholder="Ej. Factura proveedor mayo" required />
+            </label>
+            <label>
+              Fecha
+              <input id="dateInput" type="date" required />
+            </label>
+            <label>
+              Lugar o area
+              <input id="placeInput" type="text" maxlength="80" placeholder="Ej. Aula 3, patio, oficina" />
+            </label>
+          </div>
+
+          <label>
+            Descripcion
+            <textarea id="descriptionInput" rows="4" maxlength="600" placeholder="Describe la factura, detalle o concepto..." required></textarea>
+          </label>
+
+          <label class="upload-zone" id="dropZone">
+            <input id="photoInput" type="file" accept="image/*" />
+            <span class="upload-icon" aria-hidden="true">+</span>
+            <strong>Subir foto</strong>
+            <small>JPG, PNG o imagen del celular. Tambien puedes arrastrarla aqui.</small>
+          </label>
+
+          <div class="preview" id="imagePreview" hidden>
+            <img id="previewImage" alt="Vista previa de la foto seleccionada" />
+            <button class="ghost-button" id="removePhotoButton" type="button">Quitar foto</button>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-action" id="saveButton" type="submit">Guardar factura</button>
+            <button class="secondary-action" id="resetFormButton" type="reset">Vaciar formulario</button>
+          </div>
+        </form>
+
+        <section class="records-section" aria-live="polite">
+          <div class="section-heading">
+            <div>
+              <p>Listado</p>
+              <h2>Facturas registradas</h2>
+            </div>
+            <select id="sortSelect" aria-label="Ordenar registros">
+              <option value="newest">Mas recientes</option>
+              <option value="oldest">Mas antiguas</option>
+            </select>
+          </div>
+
+          <div class="records-grid" id="recordsGrid"></div>
+
+          <div class="empty-state" id="emptyState">
+            <h3>Sin facturas todavia</h3>
+            <p>Agrega nombre, fecha, descripcion y una foto para crear el primer registro.</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="recordTemplate">
+      <article class="record-card">
+        <img class="record-photo" alt="" />
+        <div class="record-content">
+          <div class="record-meta">
+            <time></time>
+            <span class="record-place"></span>
+          </div>
+          <h3 class="record-name"></h3>
+          <p class="record-description"></p>
+          <div class="record-actions">
+            <button class="edit-button" type="button">Editar</button>
+            <button class="delete-button" type="button">Eliminar</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
